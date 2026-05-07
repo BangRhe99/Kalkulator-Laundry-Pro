@@ -12,6 +12,8 @@ const SHEET_NAME_KAPASITAS = 'Master_Kapasitas_V2';
 
 // Database untuk Struktur Biaya
 const SHEET_HPP_1 = 'Struktur_Biaya_1'; // Gas, Listrik, Air, Packing, Chemical, Nota
+const SHEET_HPP_2 = 'Struktur_Biaya_2';
+const SHEET_HPP_3 = 'Struktur_Biaya_3';
 
 // =========================================================================
 // [FITUR SIDEBAR SPREADSHEET (FILTER KOLOM)]
