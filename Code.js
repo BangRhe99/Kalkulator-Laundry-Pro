@@ -1164,9 +1164,10 @@ function saveStrukturBiaya(payload) {
     }
 
     let rowNum = targetRow;
+    const lastCol = sheet.getLastColumn();
     if (rowNum === -1) {
       rowNum = sheet.getLastRow() + 1;
-      const newRow = new Array(sheet.getLastColumn()).fill('');
+      const newRow = new Array(lastCol).fill('');
       if ('Timestamp' in colMap) newRow[colMap['Timestamp']] = timestamp;
       newRow[nameCol] = payload.namaOutlet;
       Object.keys(mapping).forEach(function(key) {
@@ -1174,17 +1175,20 @@ function saveStrukturBiaya(payload) {
       });
       sheet.appendRow(newRow);
     } else {
-      if ('Timestamp' in colMap) sheet.getRange(rowNum, colMap['Timestamp'] + 1).setValue(timestamp);
+      const rowValues = data[targetRow - 1].slice();
+      if (rowValues.length < lastCol) {
+        rowValues.length = lastCol;
+        rowValues.fill('', data[targetRow - 1].length);
+      }
+      if ('Timestamp' in colMap) rowValues[colMap['Timestamp']] = timestamp;
+      rowValues[nameCol] = payload.namaOutlet;
       Object.keys(mapping).forEach(function(key) {
         if (!(key in colMap)) return;
-        const val = resolveFormula(mapping[key], rowNum);
-        const cell = sheet.getRange(rowNum, colMap[key] + 1);
-        if (typeof val === 'string' && val.startsWith('=')) cell.setFormula(val);
-        else cell.setValue(val);
+        rowValues[colMap[key]] = resolveFormula(mapping[key], rowNum);
       });
+      sheet.getRange(rowNum, 1, 1, lastCol).setValues([rowValues]);
     }
 
-    SpreadsheetApp.flush();
     clearServerCache();
     return { status: 'success', message: 'Data Struktur Biaya (HPP) berhasil tersimpan ke Struktur_Biaya_1.' };
   } catch (error) {
