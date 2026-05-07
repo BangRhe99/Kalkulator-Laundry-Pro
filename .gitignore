@@ -1,0 +1,20 @@
+# Node modules
+node_modules/
+
+# Temporary debug files
+duplicate_names
+duplicate_vars
+tmp_duplicate_scan.js
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# VSCode local settings
+.vscode/
+
+# Clasp cache
+.claspignore
